@@ -1,29 +1,32 @@
 const mongoose = require("mongoose");
 
-const TransactionSchema = new mongoose.Schema({
+const AccountSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "user",
         required: [true, "User Id is required"],
     },
-    type: {
+    bankCode: {
         type: String,
         required: true,
     },
-    status: {
+    accountNumber: {
         type: String,
         required: true,
         trim: true,
     },
-    amount: {
-        type: Number,
+    accountName: {
+        type: String,
         required: true,
         trim: true,
         default: 0,
     },
-    ref: {
+    bankName: {
         type: String,
         required: true,
+    },
+    wallet: {
+        type: String,
     },
     createdAt: {
         type: Date,
@@ -35,4 +38,4 @@ const TransactionSchema = new mongoose.Schema({
     },
 });
 
-module.exports = Transaction = mongoose.model("transaction", TransactionSchema);
+module.exports = Transaction = mongoose.model("account", AccountSchema);

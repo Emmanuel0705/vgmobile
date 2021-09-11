@@ -14,6 +14,8 @@ app.use(cookieParser());
 app.use(cors());
 app.get("/", (req, res) => res.send("APP IS RUNNING"));
 app.use("/api/user", require("./routes/api/user"));
+app.use("/api/kyc", require("./routes/api/kyc"));
+app.use("/api/account", require("./routes/api/account"));
 app.use("/api/transaction", require("./routes/api/transaction"));
 app.all("*", (req, res, next) => {
     const err = new AppError(

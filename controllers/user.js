@@ -27,27 +27,34 @@ exports.getUser = catchAsync(async (req, res) => {
     const user = await User.findById(req.user.id).select("-password");
     res.json({ user });
 });
-exports.test = catchAsync(async (req, res) => {
-    //create cookie options
-    const cookieOptions = {
-        expires: new Date(
-            Date.now() + process.env.JWT_COOKIE_EXP * 24 * 60 * 60 * 1000
-        ),
-        httpOnly: true,
-        secure: false,
-    };
-
-    //set cookie to https in production
-    // if(process.env.NODE_ENV === "production") cookieOptions.secure = true
-
-    // jwt
-    const token = "1234hhhhh";
-    console.log(res.cookie("jwt", token, cookieOptions));
-
-    //send jwt as cookie
-    res.cookie("jwt", token, cookieOptions).send({ token });
+exports.getRefUsers = catchAsync(async (req, res) => {
+    const user = await User.findById(req.user.id).select("-password");
+    const refs = await User.find({ sponsorId: user.referralId });
+    res.json({ refs });
 });
 
+exports.updateProfile = catchAsync(async (req, res) => {
+    const Obj = filterObj(
+        req.body,
+        "name",
+        "phone",
+        "gender",
+        "whatsapp",
+        "state",
+        "address",
+        "country",
+        "city",
+        "email"
+    );
+
+    let user = await User.findByIdAndUpdate(
+        req.user.id,
+        { $set: Obj },
+        { returnNewDocument: true }
+    );
+
+    res.json(user);
+});
 //description => Login
 exports.loginUser = catchAsync(async (req, res) => {
     const errors = validationResult(req);
@@ -64,23 +71,10 @@ exports.loginUser = catchAsync(async (req, res) => {
     if (!isValid) {
         return res.json({ status: "error", message: "Invalid Login Details" });
     }
-    //create cookie options
-    const cookieOptions = {
-        expires: new Date(
-            Date.now() + process.env.JWT_COOKIE_EXP * 24 * 60 * 60 * 1000
-        ),
-        httpOnly: true,
-        secure: false,
-    };
-
-    //set cookie to https in production
-    // if(process.env.NODE_ENV === "production") cookieOptions.secure = true
 
     // jwt
     const token = jwtSign(user.id);
     res.json({ token, user });
-    //send jwt as cookie
-    // res.cookie("jwt",token,cookieOptions).send({token})
 });
 
 exports.registerUser = catchAsync(async (req, res, next) => {

@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const TransactionSchema = new mongoose.Schema({
+const kycSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "user",
@@ -10,18 +10,18 @@ const TransactionSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    status: {
+    number: {
         type: String,
         required: true,
         trim: true,
     },
-    amount: {
-        type: Number,
+    front: {
+        type: String,
         required: true,
         trim: true,
         default: 0,
     },
-    ref: {
+    back: {
         type: String,
         required: true,
     },
@@ -35,4 +35,4 @@ const TransactionSchema = new mongoose.Schema({
     },
 });
 
-module.exports = Transaction = mongoose.model("transaction", TransactionSchema);
+module.exports = Transaction = mongoose.model("kyc", kycSchema);

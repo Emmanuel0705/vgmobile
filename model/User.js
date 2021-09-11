@@ -34,6 +34,24 @@ const UserSchema = new mongoose.Schema({
         trim: true,
         unique: [true, "email already exits"],
     },
+    gender: {
+        type: String,
+    },
+    country: {
+        type: String,
+    },
+    city: {
+        type: String,
+    },
+    whatsapp: {
+        type: String,
+    },
+    address: {
+        type: String,
+    },
+    state: {
+        type: String,
+    },
     password: {
         type: String,
         required: [true, "password is required"],
